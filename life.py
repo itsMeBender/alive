@@ -105,9 +105,10 @@ ICON_READY = [
     ]
 
 def print_field(field):
-    """ Just a debug function to display a LIFE playfield
-        Field is an Array of 8x8 cells
-        """
+    """
+    Just a debug function to display a LIFE playfield
+    Field is an Array of 8x8 cells
+    """
     cell = 0
 
     while cell < 64:
@@ -121,8 +122,10 @@ def print_field(field):
 
 
 def is_life_frozen():
-    """ is LIFE frozen? No cell generation?
-        """
+    """
+    Is LIFE frozen? No cell generation? (2x2 cells)
+    TODO: Check also for flip-flops, identical display on third, fourth, etc. generation
+    """
     cell = 0
     frozen = True
 
@@ -135,12 +138,16 @@ def is_life_frozen():
 
 
 def render_life(image):
-    """ Render LIFE on Sense Hat matrix """
+    """
+    Render LIFE on Sense Hat matrix
+    """
     sense.set_pixels(image)
 
 
 def give_birth(field):
-    """ Just a debug function to display a LIFE playfield """
+    """
+    Just a debug function to display a LIFE playfield
+    """
     column = 0
     cell = 0
     row = 0
@@ -149,7 +156,7 @@ def give_birth(field):
         column = cell % 8
         row = math.floor(cell / 8)
 
-        # Build new PLAYFIELD
+        # Build new PLAYFIELD1704 
         set_cell_birth(column, row, 0)
         neighborCount = count_cells_alive(field, column, row)
 
@@ -176,6 +183,10 @@ def give_birth(field):
         cell += 1
 
 def random_color(color):
+    """
+    Depending on a given RED or GREEN or BLUE 'color' intensity.
+    A new color intensity is randomly choosen nearby the original 'color'  value.
+    """
     color = color + random.randint(0, round((255 - color) * 0.5)) - round((255 - color) * 0.25) 
     if color > 255 :
         color = 255
@@ -184,7 +195,9 @@ def random_color(color):
     return color
     
 def set_cell_birth(x_pos, y_pos, value):
-    """Birth of cells"""
+    """
+    Birth of cells
+    """
     idx = x_pos + y_pos * 8
 
     
@@ -226,10 +239,11 @@ def set_cell_birth(x_pos, y_pos, value):
 
 
 def boundary_overflow(posX, posY):
-    """ Correct coordinates for boudary overflow
-        Treating the 8x8 boundaries as if they don't exist.
-        (8,8) is the same as (0,0), (-1,-1) same as (7,7)
-        """
+    """
+    Correct coordinates for boudary overflow
+    Treating the 8x8 boundaries as if they don't exist.
+    (8,8) is the same as (0,0), (-1,-1) same as (7,7)
+    """
     x_field = posX
     y_field = posY
     
@@ -246,7 +260,9 @@ def boundary_overflow(posX, posY):
 
 
 def count_cells_alive(field, posX, posY):
-    """ cell the number of life cells around this cell (in total 8 cells) """
+    """
+    The number of alive cells around this cell (in total 8 cells)
+    """
     lifeones = 0
     neigbours = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
     for neigbour in neigbours:
@@ -259,9 +275,10 @@ def count_cells_alive(field, posX, posY):
 
 
 def mix_color_cells_alive(x_pos, y_pos):
-    """ Check for life cells around this cell (in total 8 cells)
-        count the colors RGB mix
-        """
+    """
+    Check for life cells around this cell (in total 8 cells)
+    count the colors RGB mix
+    """
     lifeones = 0
     r = 0       # Red color 0..255
     g = 0       # Green color 0..255
@@ -289,7 +306,7 @@ def mix_color_cells_alive(x_pos, y_pos):
 
 
 #
-# loop LIFE
+# loop CONWAY's GAME OF LIFE
 #
 
 MAXTICKS = 200 # 86
@@ -337,7 +354,7 @@ while MAXTICKS > 0:
 
 time.sleep(1)
 sense.set_rotation(180)
-render_life(ICON_READY)
+render_life(ICON_READY) # Smily symbol
 time.sleep(3)
 sense.clear()
 print_field(PLAYFIELD[ACTIVEFIELD])
